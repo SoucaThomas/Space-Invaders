@@ -6,7 +6,7 @@ class Enemy {
   y: number;
   public health: number = 100;
   public scoreOnDeath: number = 100;
-  public speed: number = 5;
+  public speed: number = 2;
   public colisionBox!: colisionBox;
 
   private gameEngine: GameEngine;

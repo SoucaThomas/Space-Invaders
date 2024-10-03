@@ -8,6 +8,7 @@ class Bullet {
   public x!: number;
   public y!: number;
   public damage: number = 10;
+  public speed: number = 3;
 
   public colisionBox!: colisionBox;
 
@@ -33,9 +34,9 @@ class Bullet {
     this.calculateColisionBox();
 
     if (this.owner instanceof Player) {
-      this.y -= 20;
+      this.y -= this.speed;
     } else if (this.owner instanceof Enemy) {
-      this.y += 20;
+      this.y += this.speed;
     }
 
     if (this.y < 0) {

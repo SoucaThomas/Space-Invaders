@@ -55,7 +55,7 @@ class GameEngine {
 
     this.inGameWorld.push(this.player, enemy);
 
-    const fps = 10;
+    const fps = 60;
     const interval = 1000 / fps;
     setInterval(() => {
       this.draw();
