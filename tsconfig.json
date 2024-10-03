@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "ESNext", // Ensure this is set to ESNext for Vite
+    "target": "ES6",
+    "esModuleInterop": true, // Ensures compatibility between ESModules and CommonJS
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
