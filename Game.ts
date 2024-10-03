@@ -51,9 +51,12 @@ class GameEngine {
       this
     );
 
-    const enemy = new Enemy(100, 100, this);
+    for (let i = 0; i < 10; i++) {
+      const enemy = new Enemy(200 + i * 100, 100, this);
+      this.inGameWorld.push(enemy);
+    }
 
-    this.inGameWorld.push(this.player, enemy);
+    this.inGameWorld.push(this.player);
 
     const fps = 60;
     const interval = 1000 / fps;
@@ -84,7 +87,6 @@ class GameEngine {
 
   private update() {
     this.scoreElement.innerText = `Score: ${this.score}`;
-    this.fpsElement.innerText = `FPS: ${Math.round(1000 / 16)}`;
 
     for (let i = 0; i < this.inGameWorld.length; i++) {
       this.inGameWorld[i].update();
