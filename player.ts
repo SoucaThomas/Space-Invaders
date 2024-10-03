@@ -1,4 +1,6 @@
 //player.ts
+import Bullet from "./Bullet";
+import Enemy from "./Enemy";
 import GameEngine from "./Game";
 
 enum Directions {
@@ -14,15 +16,22 @@ class Player {
   x: number;
   y: number;
   public colisionBox!: colisionBox;
+  public health: number = 100;
+  public scoreOnHit: number = -10;
 
   private gameEngine: GameEngine;
   private lastTimeShot: number = 0;
+
+  private healthElement: HTMLProgressElement;
 
   constructor(x: number, y: number, gameEngine: GameEngine) {
     this.x = x;
     this.y = y;
     this.gameEngine = gameEngine;
 
+    this.healthElement = document.getElementById(
+      "health"
+    ) as HTMLProgressElement;
     this.calculateColisionBox();
     window.addEventListener("keydown", (e) => {
       if (e.key === "ArrowRight") {
@@ -48,6 +57,17 @@ class Player {
 
   public update() {
     this.calculateColisionBox();
+  }
+
+  public collision(gameObject: any) {
+    if (gameObject instanceof Bullet) {
+      if (gameObject.owner instanceof Enemy) {
+        this.health -= gameObject.damage;
+        this.healthElement.value = this.health;
+        this.gameEngine.removeGameObject(gameObject);
+        this.gameEngine.score += this.scoreOnHit;
+      }
+    }
   }
 
   private calculateColisionBox() {

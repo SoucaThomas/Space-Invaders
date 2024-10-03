@@ -107,6 +107,18 @@ class GameEngine {
           }
         }
       }
+      if (this.inGameWorld[i] instanceof Bullet) {
+        for (let j = 0; j < this.inGameWorld.length; j++) {
+          if (this.inGameWorld[j] instanceof Player) {
+            const bullet = this.inGameWorld[i] as Bullet;
+            const player = this.inGameWorld[j] as Player;
+
+            if (this.colisionDetection(bullet, player)) {
+              player.collision(bullet);
+            }
+          }
+        }
+      }
     }
   }
 

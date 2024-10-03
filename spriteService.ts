@@ -9,7 +9,7 @@ class SpriteService {
   playerSprite: HTMLImageElement;
   enemySprite: HTMLImageElement;
 
-  scale: number = 2;
+  scale: number = 1;
 
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     this.canvas = canvas;
