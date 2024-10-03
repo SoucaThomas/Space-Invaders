@@ -54,7 +54,12 @@ class GameEngine {
     this.inGameWorld.push(bullet);
   }
 
+  removeGameObject(gameObject: any) {
+    this.inGameWorld = this.inGameWorld.filter((obj) => obj !== gameObject);
+  }
+
   private draw() {
+    console.log(this.inGameWorld.length);
     //draw background
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.spriteService.drawBackground();

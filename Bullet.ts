@@ -23,9 +23,8 @@ class Bullet {
   update() {
     this.y -= 10;
 
-    console.log(`Bullet ${this.id} is at ${this.x}, ${this.y}`);
     if (this.y < 0) {
-      console.log("Bullet removed");
+      this.gameEngine.removeGameObject(this);
     }
   }
 
