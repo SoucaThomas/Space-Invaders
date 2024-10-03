@@ -10,9 +10,6 @@ enum Action {
   Shoot,
 }
 
-const boxWidth = 64;
-const boxHeight = 64;
-
 class Player {
   x: number;
   y: number;
@@ -20,6 +17,7 @@ class Player {
   boxStartY!: number;
   boxEndX!: number;
   boxEndY!: number;
+  public colisionBox!: colisionBox;
 
   private gameEngine: GameEngine;
 
@@ -38,34 +36,36 @@ class Player {
       }
     });
 
-    this.calculateBox();
+    this.calculateColisionBox();
   }
 
   move(dir: Directions) {
     this.x += 10 * dir;
-
-    this.calculateBox();
   }
 
   public draw() {
     this.gameEngine.spriteService.drawPlayer(this);
+    this.gameEngine.spriteService.drawColisionBox(this);
   }
 
-  public update() {}
+  public update() {
+    this.calculateColisionBox();
+  }
 
+  private calculateColisionBox() {
+    this.colisionBox = {
+      offsetX: this.x - 5,
+      offsetY: this.y + 5,
+      width: 10,
+      height: 10,
+    };
+  }
   private action(action: Action) {
     switch (action) {
       case Action.Shoot:
         this.gameEngine.shoot(this);
         break;
     }
-  }
-
-  private calculateBox() {
-    this.boxStartX = this.x - 32;
-    this.boxStartY = this.y - 32;
-    this.boxEndX = this.x + 32;
-    this.boxEndY = this.y + 32;
   }
 }
 export { Directions, Action };
