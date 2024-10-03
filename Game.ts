@@ -9,9 +9,9 @@ class GameEngine {
   public spriteService: SpriteService;
 
   public score: number = 0;
+  public bulletCooldown: number = 200;
 
   private scoreElement: HTMLElement;
-  private fpsElement: HTMLElement;
 
   private player!: Player;
   private inGameWorld: any[] = [];
@@ -32,7 +32,6 @@ class GameEngine {
     this.canvas.height = window.innerHeight;
 
     this.scoreElement = scoreElement;
-    this.fpsElement = fpsElement;
 
     this.spriteService = new SpriteService(this.canvas, this.ctx);
     this.spriteService.loadSprites().then(() => {
@@ -66,7 +65,7 @@ class GameEngine {
     }, interval);
   }
 
-  shoot(owner: Player) {
+  shoot(owner: Player | Enemy) {
     const bullet = new Bullet(owner, this);
 
     this.inGameWorld.push(bullet);
@@ -90,6 +89,11 @@ class GameEngine {
 
     for (let i = 0; i < this.inGameWorld.length; i++) {
       this.inGameWorld[i].update();
+
+      if (this.inGameWorld[i] instanceof Enemy && Math.random() < 0.005) {
+        const enemy = this.inGameWorld[i] as Enemy;
+        enemy.shoot();
+      }
 
       if (this.inGameWorld[i] instanceof Bullet) {
         for (let j = 0; j < this.inGameWorld.length; j++) {

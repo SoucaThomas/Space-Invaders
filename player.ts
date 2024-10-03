@@ -16,6 +16,7 @@ class Player {
   public colisionBox!: colisionBox;
 
   private gameEngine: GameEngine;
+  private lastTimeShot: number = 0;
 
   constructor(x: number, y: number, gameEngine: GameEngine) {
     this.x = x;
@@ -60,7 +61,13 @@ class Player {
   private action(action: Action) {
     switch (action) {
       case Action.Shoot:
-        this.gameEngine.shoot(this);
+        if (
+          performance.now() - this.lastTimeShot >
+          this.gameEngine.bulletCooldown
+        ) {
+          this.gameEngine.shoot(this);
+          this.lastTimeShot = performance.now();
+        }
         break;
     }
   }

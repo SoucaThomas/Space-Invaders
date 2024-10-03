@@ -4,10 +4,12 @@ import Bullet from "./Bullet";
 class Enemy {
   x: number;
   y: number;
-  public health: number = 100;
+  public health: number = 30;
   public scoreOnDeath: number = 100;
-  public speed: number = 2;
+  public speed: number = 0.5;
   public colisionBox!: colisionBox;
+
+  private lastTimeShot: number = 0;
 
   private gameEngine: GameEngine;
   constructor(x: number, y: number, gameEngine: GameEngine) {
@@ -43,6 +45,13 @@ class Enemy {
   draw() {
     this.gameEngine.spriteService.drawEnemy(this);
     this.gameEngine.spriteService.drawColisionBox(this);
+  }
+
+  public shoot() {
+    if (performance.now() - this.lastTimeShot > 900) {
+      this.gameEngine.shoot(this);
+      this.lastTimeShot = performance.now();
+    }
   }
 
   private calculateColisionBox() {
