@@ -48,9 +48,9 @@ class Enemy {
   private calculateColisionBox() {
     this.colisionBox = {
       offsetX: this.x - this.gameEngine.spriteService.enemySprite.width / 2,
-      offsetY: this.y - 50,
-      width: 100,
-      height: 100,
+      offsetY: this.y - this.gameEngine.spriteService.enemySprite.height / 2,
+      width: this.gameEngine.spriteService.enemySprite.width,
+      height: this.gameEngine.spriteService.enemySprite.height,
     };
   }
 }

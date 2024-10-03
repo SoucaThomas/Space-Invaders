@@ -9,12 +9,14 @@ class SpriteService {
   playerSprite: HTMLImageElement;
   enemySprite: HTMLImageElement;
 
+  scale: number = 2;
+
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     this.canvas = canvas;
     this.ctx = ctx;
-    this.backgroundSprite = new Image(64, 64);
-    this.playerSprite = new Image(64, 64);
-    this.enemySprite = new Image(10, 10);
+    this.backgroundSprite = new Image(64 * this.scale, 64 * this.scale);
+    this.playerSprite = new Image(32 * this.scale, 36 * this.scale);
+    this.enemySprite = new Image(45 * this.scale, 32 * this.scale);
   }
 
   loadSprites(): Promise<void> {
@@ -24,16 +26,26 @@ class SpriteService {
         this.backgroundSprite.onload = () => resolve();
       }),
       new Promise<void>((resolve) => {
-        this.playerSprite.src = "assets/player.png";
+        this.playerSprite.src = "assets/Player.png";
         this.playerSprite.onload = () => resolve();
+      }),
+      new Promise<void>((resolve) => {
+        this.enemySprite.src = "assets/Enemy.png";
+        this.enemySprite.onload = () => resolve();
       }),
     ]).then(() => {});
   }
 
   drawBackground() {
-    for (let i = 0; i < this.canvas.width; i += 64) {
-      for (let j = 0; j < this.canvas.height; j += 64) {
-        this.ctx.drawImage(this.backgroundSprite, i, j);
+    for (let i = 0; i < this.canvas.width; i += 64 * this.scale) {
+      for (let j = 0; j < this.canvas.height; j += 64 * this.scale) {
+        this.ctx.drawImage(
+          this.backgroundSprite,
+          i,
+          j,
+          this.backgroundSprite.width,
+          this.backgroundSprite.height
+        );
       }
     }
   }
@@ -41,21 +53,21 @@ class SpriteService {
   drawPlayer(player: Player) {
     this.ctx.drawImage(
       this.playerSprite,
-      player.boxStartX,
-      player.boxStartY,
-      64,
-      64
+      player.colisionBox.offsetX,
+      player.colisionBox.offsetY,
+      this.playerSprite.width,
+      this.playerSprite.height
     );
   }
 
   drawEnemy(enemy: Enemy) {
-    this.ctx.save();
-    this.ctx.fillStyle = "black";
-    this.ctx.beginPath();
-    this.ctx.arc(enemy.x, enemy.y, 50, 0, Math.PI * 2);
-    this.ctx.fill();
-    this.ctx.closePath();
-    this.ctx.restore();
+    this.ctx.drawImage(
+      this.enemySprite,
+      enemy.colisionBox.offsetX,
+      enemy.colisionBox.offsetY,
+      this.enemySprite.width,
+      this.enemySprite.height
+    );
   }
 
   drawBullet(bullet: Bullet) {
@@ -77,6 +89,9 @@ class SpriteService {
   drawColisionBox(gameObject: any) {
     this.ctx.save();
     this.ctx.strokeStyle = "red";
+    if (gameObject instanceof Player) {
+      this.ctx.strokeStyle = "green";
+    }
     this.ctx.strokeRect(
       gameObject.colisionBox.offsetX,
       gameObject.colisionBox.offsetY,

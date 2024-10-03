@@ -13,10 +13,6 @@ enum Action {
 class Player {
   x: number;
   y: number;
-  boxStartX!: number;
-  boxStartY!: number;
-  boxEndX!: number;
-  boxEndY!: number;
   public colisionBox!: colisionBox;
 
   private gameEngine: GameEngine;
@@ -26,6 +22,7 @@ class Player {
     this.y = y;
     this.gameEngine = gameEngine;
 
+    this.calculateColisionBox();
     window.addEventListener("keydown", (e) => {
       if (e.key === "ArrowRight") {
         this.move(Directions.Right);
@@ -54,10 +51,10 @@ class Player {
 
   private calculateColisionBox() {
     this.colisionBox = {
-      offsetX: this.x - 5,
-      offsetY: this.y + 5,
-      width: 10,
-      height: 10,
+      offsetX: this.x - this.gameEngine.spriteService.playerSprite.width / 2,
+      offsetY: this.y - this.gameEngine.spriteService.playerSprite.height / 2,
+      width: this.gameEngine.spriteService.playerSprite.width,
+      height: this.gameEngine.spriteService.playerSprite.height,
     };
   }
   private action(action: Action) {

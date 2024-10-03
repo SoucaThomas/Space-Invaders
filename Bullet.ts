@@ -4,20 +4,25 @@ import GameEngine from "./Game";
 import Enemy from "./Enemy";
 
 class Bullet {
-  public owner: Bullet | Player;
-  public x: number;
-  public y: number;
+  public owner: Enemy | Player;
+  public x!: number;
+  public y!: number;
   public damage: number = 10;
 
   public colisionBox!: colisionBox;
 
   private gameEngine: GameEngine;
 
-  constructor(owner: any, gameEngine: GameEngine) {
+  constructor(owner: Player | Enemy, gameEngine: GameEngine) {
     this.owner = owner;
 
-    this.x = owner.x;
-    this.y = owner.y;
+    if (owner instanceof Player) {
+      this.x = owner.x;
+      this.y = owner.y - gameEngine.spriteService.playerSprite.height / 2;
+    } else if (owner instanceof Enemy) {
+      this.x = owner.x;
+      this.y = owner.y + gameEngine.spriteService.enemySprite.height / 2;
+    }
 
     this.calculateColisionBox();
 
