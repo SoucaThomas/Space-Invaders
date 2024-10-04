@@ -30,18 +30,14 @@ class GameEngine {
       throw new Error("Failed to get 2D context");
     }
 
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    this.canvas.width = 800;
+    this.canvas.height = 1300;
 
     this.scoreElement = scoreElement;
 
     this.spriteService = new SpriteService(this.canvas, this.ctx);
     this.spriteService.loadSprites().then(() => {
       this.start();
-    });
-
-    window.addEventListener("resize", () => {
-      this.resize();
     });
   }
 
@@ -137,10 +133,6 @@ class GameEngine {
       gameObjectA.colisionBox.offsetY + gameObjectA.colisionBox.height >
         gameObjectB.colisionBox.offsetY
     );
-  }
-  private resize() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
   }
 }
 
