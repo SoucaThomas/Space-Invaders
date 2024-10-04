@@ -39,7 +39,7 @@ class Bullet {
       this.y += this.speed;
     }
 
-    if (this.y < 0) {
+    if (this.y < 0 || this.y > this.gameEngine.canvas.height) {
       this.gameEngine.removeGameObject(this);
     }
   }
