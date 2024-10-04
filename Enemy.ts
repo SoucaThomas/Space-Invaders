@@ -36,10 +36,22 @@ class Enemy {
   update() {
     this.y += this.speed;
 
+    this.x += this.gameEngine.enemysMoveDirection * this.speed * 2;
+
+    // Check if the enemy hits the edge of the canvas and reverse direction
+    if (
+      this.x - this.gameEngine.spriteService.enemySprite.width / 2 <= 0 ||
+      this.x + this.gameEngine.spriteService.enemySprite.width / 2 >=
+        this.gameEngine.canvas.width
+    ) {
+      this.gameEngine.enemysMoveDirection *= -1;
+    }
+
     this.calculateColisionBox();
 
     if (this.y > this.gameEngine.canvas.height) {
       this.gameEngine.removeGameObject(this);
+      this.gameEngine.score -= 100;
     }
   }
 
@@ -49,7 +61,7 @@ class Enemy {
   }
 
   public shoot() {
-    if (performance.now() - this.lastTimeShot > 900) {
+    if (performance.now() - this.lastTimeShot > 1000) {
       this.gameEngine.shoot(this);
       this.lastTimeShot = performance.now();
     }
