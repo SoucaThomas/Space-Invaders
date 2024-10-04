@@ -10,7 +10,7 @@ class GameEngine {
   public spriteService: SpriteService;
 
   public score: number = 0;
-  public bulletCooldown: number = 200;
+  public bulletCooldown: number = 150;
   public playerSpeed: number = 5;
 
   private scoreElement: HTMLElement;
@@ -48,9 +48,24 @@ class GameEngine {
       this
     );
 
-    for (let i = 0; i < 10; i++) {
-      const enemy = new Enemy(200 + i * 100, 100, this);
-      this.inGameWorld.push(enemy);
+    const numberOfEnemiesOnLane = 7;
+    const distanceBetweenEnemies = 100;
+    const distanceBetweenLanes = 50;
+
+    const lanePadding =
+      this.canvas.width -
+      ((numberOfEnemiesOnLane - 1) * distanceBetweenEnemies +
+        this.spriteService.enemySprite.width);
+
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < numberOfEnemiesOnLane; j++) {
+        const enemy = new Enemy(
+          lanePadding / 2 + j * distanceBetweenEnemies,
+          300 + i * distanceBetweenLanes,
+          this
+        );
+        this.inGameWorld.push(enemy);
+      }
     }
 
     this.inGameWorld.push(this.player);
@@ -98,10 +113,12 @@ class GameEngine {
             const bullet = this.inGameWorld[i] as Bullet;
             const enemy = this.inGameWorld[j] as Enemy;
 
-            if (this.colisionDetection(bullet, enemy)) {
-              //bullet hit enemy
-              enemy.collision(bullet);
-              this.inGameWorld.push(new impactEffect(bullet, enemy, this));
+            if (bullet.owner instanceof Player) {
+              if (this.colisionDetection(bullet, enemy)) {
+                //bullet hit enemy
+                enemy.collision(bullet);
+                this.inGameWorld.push(new impactEffect(bullet, enemy, this));
+              }
             }
           }
         }
