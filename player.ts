@@ -18,6 +18,7 @@ class Player {
   public colisionBox!: colisionBox;
   public health: number = 100;
   public scoreOnHit: number = -10;
+  public color: string = "green";
 
   private gameEngine: GameEngine;
   private lastTimeShot: number = 0;

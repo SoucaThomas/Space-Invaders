@@ -9,6 +9,7 @@ class Bullet {
   public y!: number;
   public damage: number = 10;
   public speed: number = 3;
+  public color: string = "white";
 
   public colisionBox!: colisionBox;
 

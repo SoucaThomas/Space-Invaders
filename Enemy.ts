@@ -8,6 +8,7 @@ class Enemy {
   public scoreOnDeath: number = 100;
   public speed: number = 0.5;
   public colisionBox!: colisionBox;
+  public color: string = "purple";
 
   private lastTimeShot: number = 0;
 

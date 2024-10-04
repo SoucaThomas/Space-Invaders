@@ -1,5 +1,7 @@
 import Bullet from "./Bullet";
 import Enemy from "./Enemy";
+import GameObject from "./GameObject";
+import ImpactEffect from "./ImpactEffect";
 import Player from "./player";
 
 class SpriteService {
@@ -86,19 +88,32 @@ class SpriteService {
     this.ctx.restore();
   }
 
-  drawColisionBox(gameObject: any) {
+  drawImpactEffect(impactEffect: ImpactEffect) {
     this.ctx.save();
-    this.ctx.strokeStyle = "red";
-    if (gameObject instanceof Player) {
-      this.ctx.strokeStyle = "green";
-    }
-    this.ctx.strokeRect(
-      gameObject.colisionBox.offsetX,
-      gameObject.colisionBox.offsetY,
-      gameObject.colisionBox.width,
-      gameObject.colisionBox.height
-    );
+    this.ctx.fillStyle = impactEffect.color;
+    impactEffect.particales.forEach((particle) => {
+      this.ctx.beginPath();
+      this.ctx.globalAlpha = impactEffect.lifetime / 100;
+      this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.closePath();
+    });
     this.ctx.restore();
+  }
+
+  drawColisionBox(gameObject: any) {
+    // check if we are in dev mode
+    if (process.env.NODE_ENV === "development") {
+      this.ctx.save();
+      this.ctx.strokeStyle = "red";
+      this.ctx.strokeRect(
+        gameObject.colisionBox.offsetX,
+        gameObject.colisionBox.offsetY,
+        gameObject.colisionBox.width,
+        gameObject.colisionBox.height
+      );
+      this.ctx.restore();
+    }
   }
 }
 

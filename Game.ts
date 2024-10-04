@@ -2,6 +2,7 @@ import Bullet from "./Bullet";
 import Player from "./player";
 import SpriteService from "./spriteService";
 import Enemy from "./Enemy";
+import impactEffect from "./ImpactEffect";
 
 class GameEngine {
   public canvas: HTMLCanvasElement;
@@ -103,7 +104,9 @@ class GameEngine {
             const enemy = this.inGameWorld[j] as Enemy;
 
             if (this.colisionDetection(bullet, enemy)) {
+              //bullet hit enemy
               enemy.collision(bullet);
+              this.inGameWorld.push(new impactEffect(bullet, enemy, this));
             }
           }
         }
