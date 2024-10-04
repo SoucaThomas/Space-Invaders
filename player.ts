@@ -96,7 +96,13 @@ class Player {
       this.action(Action.Shoot);
     }
 
-    this.x += this.velocity.x;
+    if (this.x < 0) {
+      this.x = 0;
+    } else if (this.x > this.gameEngine.canvas.width) {
+      this.x = this.gameEngine.canvas.width;
+    } else {
+      this.x += this.velocity.x;
+    }
   }
 
   public collision(gameObject: any) {
