@@ -21,6 +21,12 @@ class Player {
 
   private gameEngine: GameEngine;
   private lastTimeShot: number = 0;
+  private KeyPressed: Map<Directions | Action, { isPressed: boolean }> =
+    new Map<Directions | Action, { isPressed: boolean }>([
+      [Directions.Right, { isPressed: false }],
+      [Directions.Left, { isPressed: false }],
+      [Action.Shoot, { isPressed: false }],
+    ]);
 
   private healthElement: HTMLProgressElement;
 
@@ -33,21 +39,32 @@ class Player {
       "health"
     ) as HTMLProgressElement;
     this.calculateColisionBox();
+
     window.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight") {
-        this.move(Directions.Right);
-      } else if (e.key === "ArrowLeft") {
-        this.move(Directions.Left);
-      } else if (e.key === "ArrowUp") {
-        this.action(Action.Shoot);
+      if (e.key === "D" || e.key === "d") {
+        this.KeyPressed.get(Directions.Right)!.isPressed = true;
+      }
+      if (e.key === "A" || e.key === "a") {
+        this.KeyPressed.get(Directions.Left)!.isPressed = true;
+      }
+      if (e.key === "W" || e.key === "w") {
+        this.KeyPressed.get(Action.Shoot)!.isPressed = true;
+      }
+    });
+
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "D" || e.key === "d") {
+        this.KeyPressed.get(Directions.Right)!.isPressed = false;
+      }
+      if (e.key === "A" || e.key === "a") {
+        this.KeyPressed.get(Directions.Left)!.isPressed = false;
+      }
+      if (e.key === "W" || e.key === "w") {
+        this.KeyPressed.get(Action.Shoot)!.isPressed = false;
       }
     });
 
     this.calculateColisionBox();
-  }
-
-  move(dir: Directions) {
-    this.x += 10 * dir;
   }
 
   public draw() {
@@ -57,6 +74,16 @@ class Player {
 
   public update() {
     this.calculateColisionBox();
+
+    if (this.KeyPressed.get(Directions.Right)!.isPressed) {
+      this.x += this.gameEngine.playerSpeed;
+    }
+    if (this.KeyPressed.get(Directions.Left)!.isPressed) {
+      this.x -= this.gameEngine.playerSpeed;
+    }
+    if (this.KeyPressed.get(Action.Shoot)!.isPressed) {
+      this.action(Action.Shoot);
+    }
   }
 
   public collision(gameObject: any) {

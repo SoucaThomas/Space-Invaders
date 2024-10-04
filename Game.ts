@@ -10,6 +10,7 @@ class GameEngine {
 
   public score: number = 0;
   public bulletCooldown: number = 200;
+  public playerSpeed: number = 5;
 
   private scoreElement: HTMLElement;
 
