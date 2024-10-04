@@ -39,17 +39,19 @@ class SpriteService {
   }
 
   drawBackground() {
-    for (let i = 0; i < this.canvas.width; i += 64 * this.scale) {
-      for (let j = 0; j < this.canvas.height; j += 64 * this.scale) {
-        this.ctx.drawImage(
-          this.backgroundSprite,
-          i,
-          j,
-          this.backgroundSprite.width,
-          this.backgroundSprite.height
-        );
-      }
-    }
+    // for (let i = 0; i < this.canvas.width; i += 64 * this.scale) {
+    //   for (let j = 0; j < this.canvas.height; j += 64 * this.scale) {
+    //     this.ctx.drawImage(
+    //       this.backgroundSprite,
+    //       i,
+    //       j,
+    //       this.backgroundSprite.width,
+    //       this.backgroundSprite.height
+    //     );
+    //   }
+    // }
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   drawPlayer(player: Player) {
@@ -74,7 +76,7 @@ class SpriteService {
 
   drawBullet(bullet: Bullet) {
     this.ctx.save();
-    this.ctx.fillStyle = "black";
+    this.ctx.fillStyle = bullet.color;
     this.ctx.beginPath();
     this.ctx.arc(
       bullet.colisionBox.offsetX,
@@ -103,17 +105,17 @@ class SpriteService {
 
   drawColisionBox(gameObject: any) {
     // check if we are in dev mode
-    if (process.env.NODE_ENV === "development") {
-      this.ctx.save();
-      this.ctx.strokeStyle = "red";
-      this.ctx.strokeRect(
-        gameObject.colisionBox.offsetX,
-        gameObject.colisionBox.offsetY,
-        gameObject.colisionBox.width,
-        gameObject.colisionBox.height
-      );
-      this.ctx.restore();
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   this.ctx.save();
+    //   this.ctx.strokeStyle = "red";
+    //   this.ctx.strokeRect(
+    //     gameObject.colisionBox.offsetX,
+    //     gameObject.colisionBox.offsetY,
+    //     gameObject.colisionBox.width,
+    //     gameObject.colisionBox.height
+    //   );
+    //   this.ctx.restore();
+    // }
   }
 }
 

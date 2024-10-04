@@ -18,15 +18,15 @@ class Bullet {
   constructor(owner: Player | Enemy, gameEngine: GameEngine) {
     this.owner = owner;
 
+    this.calculateColisionBox();
+
     if (owner instanceof Player) {
       this.x = owner.x;
-      this.y = owner.y - gameEngine.spriteService.playerSprite.height / 2;
+      this.y = owner.y - gameEngine.spriteService.playerSprite.height / 2 - 15;
     } else if (owner instanceof Enemy) {
       this.x = owner.x;
       this.y = owner.y + gameEngine.spriteService.enemySprite.height / 2;
     }
-
-    this.calculateColisionBox();
 
     this.gameEngine = gameEngine;
   }

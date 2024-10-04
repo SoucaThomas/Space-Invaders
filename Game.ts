@@ -69,7 +69,6 @@ class GameEngine {
 
   shoot(owner: Player | Enemy) {
     const bullet = new Bullet(owner, this);
-
     this.inGameWorld.push(bullet);
   }
 
@@ -119,6 +118,7 @@ class GameEngine {
 
             if (this.colisionDetection(bullet, player)) {
               player.collision(bullet);
+              this.inGameWorld.push(new impactEffect(bullet, player, this));
             }
           }
         }
