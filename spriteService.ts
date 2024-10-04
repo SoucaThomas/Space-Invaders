@@ -55,13 +55,20 @@ class SpriteService {
   }
 
   drawPlayer(player: Player) {
+    this.ctx.save();
+    this.ctx.translate(
+      player.colisionBox.offsetX + player.colisionBox.width / 2,
+      player.colisionBox.offsetY + player.colisionBox.height / 2
+    );
+    this.ctx.rotate((player.angle * Math.PI) / 180);
     this.ctx.drawImage(
       this.playerSprite,
-      player.colisionBox.offsetX,
-      player.colisionBox.offsetY,
+      -this.playerSprite.width / 2,
+      -this.playerSprite.height / 2,
       this.playerSprite.width,
       this.playerSprite.height
     );
+    this.ctx.restore();
   }
 
   drawEnemy(enemy: Enemy) {
@@ -104,7 +111,6 @@ class SpriteService {
   }
 
   drawColisionBox(gameObject: any) {
-    // check if we are in dev mode
     // if (process.env.NODE_ENV === "development") {
     //   this.ctx.save();
     //   this.ctx.strokeStyle = "red";

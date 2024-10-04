@@ -19,6 +19,11 @@ class Player {
   public health: number = 100;
   public scoreOnHit: number = -10;
   public color: string = "green";
+  public angle: number = 0;
+  public velocity = {
+    x: 0,
+    y: 0,
+  };
 
   private gameEngine: GameEngine;
   private lastTimeShot: number = 0;
@@ -77,14 +82,21 @@ class Player {
     this.calculateColisionBox();
 
     if (this.KeyPressed.get(Directions.Right)!.isPressed) {
-      this.x += this.gameEngine.playerSpeed;
+      this.velocity.x = this.gameEngine.playerSpeed;
+      this.angle = 15;
+    } else if (this.KeyPressed.get(Directions.Left)!.isPressed) {
+      this.velocity.x = -this.gameEngine.playerSpeed;
+      this.angle = -15;
+    } else {
+      this.velocity.x = 0;
+      this.angle = 0;
     }
-    if (this.KeyPressed.get(Directions.Left)!.isPressed) {
-      this.x -= this.gameEngine.playerSpeed;
-    }
+
     if (this.KeyPressed.get(Action.Shoot)!.isPressed) {
       this.action(Action.Shoot);
     }
+
+    this.x += this.velocity.x;
   }
 
   public collision(gameObject: any) {
